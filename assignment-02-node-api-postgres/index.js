@@ -14,5 +14,5 @@ app.get('/cars',db.getCars)
 app.get('/cars/:id',db.getCarById)
 
 app.listen(port,()=>{
-    
+    console.log("App is running on port ",port)
 })

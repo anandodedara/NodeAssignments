@@ -9,7 +9,7 @@ const pool = new Pool({
 })
 
 const getCars = (request,response) =>{
-    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakeId", "Make"."name" as "MakeName", "ModelId", "Models"."Name" as "ModelName" from (("Cars" inner join "Make" on "Make".id = "Cars"."MakeId") inner join "Models" on "Cars"."ModelId" = "Models".id)',
+    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakeId", "Make"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName" from (("Cars" inner join "Make" on "Make".id = "Cars"."MakeId") inner join "Models" on "Cars"."ModelId" = "Models".id)',
     (error,results)=>{
         if(error){
             throw error
@@ -21,7 +21,7 @@ const getCars = (request,response) =>{
 const getCarById = (request,response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakeId", "Make"."name" as "MakeName", "ModelId", "Models"."Name" as "ModelName" from (("Cars" inner join "Make" on "Make".id = "Cars"."MakeId") inner join "Models" on "Cars"."ModelId" = "Models".id) WHERE "Cars".id = $1',
+    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakeId", "Make"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName" from (("Cars" inner join "Make" on "Make".id = "Cars"."MakeId") inner join "Models" on "Cars"."ModelId" = "Models".id) WHERE "Cars".id = $1',
     [id], (error,results)=>{
         if(error){
             response.status(500).json("Internal Error.")
