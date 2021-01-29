@@ -22,6 +22,24 @@ const getUsers = (request, response) => {
         })
 }
 
+const getUserById = (request, response) => {
+    const id = request.params.id
+    pool.query("SELECT id, username FROM public.users where id = $1",
+        [id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            else if (results.rowCount > 0) {
+                response.status(200).json(results.rows)
+            }
+            else {
+                response.json("No records found.")
+            }
+        })
+}
+
+
 function isUsernameValid(username) {
     if (username.trim() == "" || username == null)
         return false
@@ -39,7 +57,7 @@ function isIdValid(id) {
         return false
 }
 
-const addUser = (request, response) => {
+const createUser = (request, response) => {
 
     const username = request.body.username
     if (isUsernameValid(username)) {
@@ -62,7 +80,7 @@ const addUser = (request, response) => {
 
 const updateUserById = (request, response) => {
 
-    const id = parseInt(request.body.id)
+    const id = parseInt(request.params.id)
     const username = request.body.username.toString()
 
     if (!isIdValid(id)) {
@@ -91,7 +109,7 @@ const updateUserById = (request, response) => {
 
 const deleteUser = (request, response) => {
 
-    const id = parseInt(request.body.id)
+    const id = parseInt(request.params.id)
 
 
     if (isIdValid(id)) {
@@ -115,7 +133,8 @@ const deleteUser = (request, response) => {
 
 module.exports = {
     getUsers,
-    addUser,
+    createUser,
     updateUserById,
     deleteUser,
+    getUserById,
 }
