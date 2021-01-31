@@ -9,11 +9,14 @@ const carImageUpload = require('./file-upload').carImageUpload
  * @param {*} response 
  */
 const getCars = (request, response) => {
-    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakerId", "Makers"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName" from "Cars" inner join "Makers" on "Makers".id = "Cars"."MakerId" inner join "Models" on "Cars"."ModelId" = "Models".id',
+    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakerId", "Makers"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName", "CarImages"."ImageName" from "Cars" inner join "Makers" on "Makers".id = "Cars"."MakerId" inner join "Models" on "Cars"."ModelId" = "Models".id  inner join "CarImages" on "Cars".id = "CarImages".id',
         (error, results) => {
             if (error) {
                 throw error
             }
+            results.rows.forEach(element => {
+                element.ImageName = `http://localhost:3000/uploads/images/${element.ImageName}`
+            });
             response.status(200).json(results.rows)
         })
 }

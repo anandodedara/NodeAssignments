@@ -8,6 +8,8 @@ const port = 3000
 
 //to use post parameter from request body
 app.use(express.urlencoded({ extended: true }))
+app.use('/uploads', express.static('uploads'));
+
 
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
