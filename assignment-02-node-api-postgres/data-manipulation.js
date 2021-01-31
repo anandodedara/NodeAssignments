@@ -2,6 +2,7 @@
 const pool = require('./db-connection').pool
 
 
+
 //Data Manipulation Functions
 
 /**
@@ -159,6 +160,23 @@ async function updateSingleCar(carId, carName, modelId, makerId) {
     }
 }
 
+async function insertCarImageRecord(carId,imageName){
+
+
+    let query = `INSERT INTO public."CarImages" ("CarId", "ImageName") VALUES(${carId},'${imageName}');`
+
+    let results = await pool.query(query)
+    
+    if (results instanceof Error) {
+        throw results
+    }
+    else if (results.rowCount > 0) {
+        return true
+    } else {
+        return false
+    }
+}
+
 //####################################################
 
 module.exports = {
@@ -166,5 +184,7 @@ module.exports = {
     insertModelIfNotExists,
     insertMakerIfNotExists,
     checkIfCarExists,
+    updateSingleCar,
+    insertCarImageRecord
 
 }

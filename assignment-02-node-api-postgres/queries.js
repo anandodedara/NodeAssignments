@@ -1,5 +1,7 @@
 const data = require('./data-manipulation')
 const pool = require('./db-connection').pool
+const carImageUpload = require('./file-upload').carImageUpload
+
 /**
  * GET all cars
  * 
@@ -111,7 +113,7 @@ const deleteCar = async (request, response) => {
 
     let query = `delete from "Cars" where id = ${id}`
     let results = await pool.query(query)
-    
+
     console.log(results)
 
     if (results instanceof Error) {
@@ -122,7 +124,26 @@ const deleteCar = async (request, response) => {
     } else {
         response.status(200).json("This car does not exists.")
     }
-    
+
+}
+
+const insertCarImageRecord = async (request, response) => {
+
+    const carId = parseInt(request.params.id);
+    const fileName = request.file.filename
+    if (!request.file) {
+        response.status(500).json('Car image not found.');
+    } else {
+        let result = await carImageUpload.single('carImage')
+
+    }
+    let result = await data.insertCarImageRecord(carId, fileName)
+    if (result) {
+        response.status(200).json({ message: "Image uploaded successfully." })
+    } else {
+        response.status(500).json({ message: "Error while uploading image." })
+    }
+
 }
 
 
@@ -133,5 +154,6 @@ module.exports = {
     getCarById,
     createCar,
     updateCar,
-    deleteCar
+    deleteCar,
+    insertCarImageRecord
 }
