@@ -2,14 +2,16 @@ const db = require('./queries')
 const express = require('express')
 const carImageUpload = require('./file-upload').carImageUpload
 const { request, response } = require('express')
+var path = require('path');
 
 const app = express()
 const port = 3000
 
 //to use post parameter from request body
 app.use(express.urlencoded({ extended: true }))
-app.use('/uploads', express.static('uploads'));
 
+//get images
+app.use('*/images',express.static('uploads/images'));
 
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })

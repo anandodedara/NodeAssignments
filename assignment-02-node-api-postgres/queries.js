@@ -136,10 +136,8 @@ const insertCarImageRecord = async (request, response) => {
     const fileName = request.file.filename
     if (!request.file) {
         response.status(500).json('Car image not found.');
-    } else {
-        let result = await carImageUpload.single('carImage')
-
-    }
+        return;
+    } 
     let result = await data.insertCarImageRecord(carId, fileName)
     if (result) {
         response.status(200).json({ message: "Image uploaded successfully." })
