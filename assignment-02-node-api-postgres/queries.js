@@ -9,14 +9,31 @@ const carImageUpload = require('./file-upload').carImageUpload
  * @param {*} response 
  */
 const getCars = (request, response) => {
-    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakerId", "Makers"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName", "CarImages"."ImageName" from "Cars" inner join "Makers" on "Makers".id = "Cars"."MakerId" inner join "Models" on "Cars"."ModelId" = "Models".id  inner join "CarImages" on "Cars".id = "CarImages".id',
+
+    let query = 'SELECT "Cars".id , "Cars"."Name" as "CarName",' +
+    '"MakerId", "Makers"."name" as "MakerName", ' +
+    '"ModelId", "Models"."Name" as "ModelName", '+
+    'images from "Cars" '+
+    'inner join "Makers" on "Makers".id = "Cars"."MakerId" '+
+    'inner join "Models" on "Cars"."ModelId" = "Models".id  '+
+    'inner join ('+
+    '    select "CarId", array_agg("CarImages"."ImageName")  as images'+
+    '    from "CarImages" '+
+    '    group by "CarImages"."CarId"'+
+    ') as "CarImage" on "Cars".id = "CarImage"."CarId"'
+
+    pool.query(query,
         (error, results) => {
             if (error) {
                 throw error
             }
             results.rows.forEach(element => {
-                element.ImageName = `http://localhost:3000/uploads/images/${element.ImageName}`
+                for(let i=0;i<element.images.length;i++){
+                    element.images[i] = 'http://localhost:3000/uploads/images/'+element.images[i]
+                }
             });
+                
+            
             response.status(200).json(results.rows)
         })
 }
@@ -29,12 +46,30 @@ const getCars = (request, response) => {
 const getCarById = (request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('SELECT "Cars".id , "Cars"."Name" as "CarName", "MakerId", "Makers"."name" as "MakerName", "ModelId", "Models"."Name" as "ModelName" from "Cars" inner join "Makers" on "Makers".id = "Cars"."MakerId" inner join "Models" on "Cars"."ModelId" = "Models".id WHERE "Cars".id = $1',
+
+    let query = 'SELECT "Cars".id , "Cars"."Name" as "CarName",' +
+    '"MakerId", "Makers"."name" as "MakerName", ' +
+    '"ModelId", "Models"."Name" as "ModelName", '+
+    'images from "Cars" '+
+    'inner join "Makers" on "Makers".id = "Cars"."MakerId" '+
+    'inner join "Models" on "Cars"."ModelId" = "Models".id  '+
+    'inner join ('+
+    '    select "CarId", array_agg("CarImages"."ImageName")  as images'+
+    '    from "CarImages" '+
+    '    group by "CarImages"."CarId"'+
+    ') as "CarImage" on "Cars".id = "CarImage"."CarId" where "Cars".id = $1'
+
+    pool.query(query,
         [id], (error, results) => {
             if (error) {
                 response.status(500).json("Internal Error.")
                 throw error
             }
+            results.rows.forEach(element => {
+                for(let i=0;i<element.images.length;i++){
+                    element.images[i] = 'http://localhost:3000/uploads/images/'+element.images[i]
+                }
+            });
             response.status(200).json(results.rows)
 
         })
