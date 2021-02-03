@@ -1,5 +1,7 @@
 {
     "EmailRequired": "Email is required!!!",
     "PasswordRequired": "Password is required!!!",
-    "RecordListedSuccessfully":"Records listed succsully!!!"
+    "RecordListedSuccessfully":"Records listed succsully!!!",
+    "NoRecord":"No Records found!!!"
+
 }

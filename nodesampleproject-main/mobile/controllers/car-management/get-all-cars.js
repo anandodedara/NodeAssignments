@@ -40,13 +40,13 @@ exports.getAllCars = function (req, res) {
                     return resolve({
                         status: HttpStatusCode.StatusCodes.OK,
                         data: response,
-                        message: 'Record listed successfully!!!'
+                        message: req.i18n.__('RecordListedSuccessfully')
                     });
                 } else {
                     return resolve({
                         status: HttpStatusCode.StatusCodes.OK,
                         data: [],
-                        message: 'No record found!!!'
+                        message: req.i18n.__('NoRecord')
                     });
                 }
             })

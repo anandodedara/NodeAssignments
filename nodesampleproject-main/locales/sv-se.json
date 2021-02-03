@@ -1,4 +1,6 @@
 {
     "EmailRequired": "E-post krävs !!!",
-    "PasswordRequired": "Lösenord krävs!!!"
+    "PasswordRequired": "Lösenord krävs!!!",
+    "RecordListedSuccessfully":"Registrerade poster succully!!!",
+    "NoRecord":"Inga uppgifter funna!!!"
 }

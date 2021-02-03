@@ -1,4 +1,6 @@
 {
     "EmailRequired": "E-mail er påkrævet !!!",
-    "PasswordRequired": "Adgangskode er påkrævet!!!"
+    "PasswordRequired": "Adgangskode er påkrævet!!!",
+    "RecordListedSuccessfully":"Records succesvol weergegeven!!!",
+    "NoRecord":"Geen verslagen gevonden!!!"
 }
